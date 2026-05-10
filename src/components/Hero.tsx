@@ -1,12 +1,10 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { ShoppingBag, Minus } from "lucide-react";
 import driverCasual from "@/assets/driver-casual.png";
-import helmet from "@/assets/helmet-ferrari.png";
+import driverSuit from "@/assets/driver-suit.png";
+import { FluidReveal } from "@/components/FluidReveal";
 
 export function Hero() {
-  const [hovered, setHovered] = useState(false);
-
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-[#f4f2ed] text-carbon">
       {/* Topographic pattern bg */}
@@ -62,50 +60,18 @@ export function Hero() {
         </div>
       </header>
 
-      {/* Center driver — hover swap */}
-      <div
-        className="relative z-10 mx-auto mt-2 md:mt-0 flex h-[78vh] w-full max-w-[820px] items-end justify-center"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onTouchStart={() => setHovered((h) => !h)}
-      >
-        <motion.img
-          src={driverCasual}
-          alt="Charles Leclerc casual portrait"
-          width={1024}
-          height={1024}
-          className="absolute bottom-0 h-full w-auto select-none object-contain"
-          draggable={false}
+      {/* Center driver — fluid hover reveal */}
+      <div className="relative z-10 mx-auto mt-2 md:mt-0 h-[78vh] w-full max-w-[820px]">
+        <FluidReveal
+          topSrc={driverCasual}
+          bottomSrc={driverSuit}
+          topAlt="Charles Leclerc casual portrait"
+          bottomAlt="Charles Leclerc in Ferrari race suit"
+          className="absolute inset-0"
         />
-        {/* Helmet drops in with a squishy spring */}
-        <motion.img
-          src={helmet}
-          alt="Ferrari Formula 1 helmet"
-          width={1024}
-          height={1024}
-          className="absolute left-1/2 h-[62%] w-auto select-none object-contain pointer-events-none"
-          style={{ top: "8%", originY: 0 }}
-          initial={false}
-          animate={
-            hovered
-              ? { x: "-50%", y: 0, scaleY: [0.6, 1.15, 0.92, 1.05, 1], scaleX: [1.2, 0.92, 1.05, 0.98, 1], opacity: 1 }
-              : { x: "-50%", y: -400, scaleY: 0.6, scaleX: 1.2, opacity: 0 }
-          }
-          transition={
-            hovered
-              ? { y: { type: "spring", stiffness: 260, damping: 14, mass: 0.9 }, scaleY: { duration: 0.9, times: [0, 0.35, 0.6, 0.8, 1] }, scaleX: { duration: 0.9, times: [0, 0.35, 0.6, 0.8, 1] }, opacity: { duration: 0.15 } }
-              : { duration: 0.4, ease: [0.77, 0, 0.175, 1] }
-          }
-          draggable={false}
-        />
-
-        {/* hover hint */}
-        <motion.div
-          animate={{ opacity: hovered ? 0 : 1 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-full bg-carbon/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-background backdrop-blur"
-        >
-          Hover · Helmet On
-        </motion.div>
+        <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-full bg-carbon/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-background backdrop-blur">
+          Hover · Suit Up
+        </div>
       </div>
 
       {/* Next race card */}

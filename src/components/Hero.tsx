@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { ShoppingBag, Minus } from "lucide-react";
 import driverCasual from "@/assets/driver-casual.png";
-import driverSuit from "@/assets/driver-suit.png";
+import helmet from "@/assets/helmet-ferrari.png";
 
 export function Hero() {
   const [hovered, setHovered] = useState(false);
@@ -75,22 +75,27 @@ export function Hero() {
           width={1024}
           height={1024}
           className="absolute bottom-0 h-full w-auto select-none object-contain"
-          animate={{ opacity: hovered ? 0 : 1, scale: hovered ? 1.02 : 1 }}
-          transition={{ duration: 0.7, ease: [0.77, 0, 0.175, 1] }}
           draggable={false}
         />
+        {/* Helmet drops in with a squishy spring */}
         <motion.img
-          src={driverSuit}
-          alt="Charles Leclerc in Ferrari race suit"
+          src={helmet}
+          alt="Ferrari Formula 1 helmet"
           width={1024}
           height={1024}
-          className="absolute bottom-0 h-full w-auto select-none object-contain"
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: hovered ? 1 : 0,
-            clipPath: hovered ? "inset(0% 0 0 0)" : "inset(100% 0 0 0)",
-          }}
-          transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1] }}
+          className="absolute left-1/2 h-[62%] w-auto select-none object-contain pointer-events-none"
+          style={{ top: "8%", originY: 0 }}
+          initial={false}
+          animate={
+            hovered
+              ? { x: "-50%", y: 0, scaleY: [0.6, 1.15, 0.92, 1.05, 1], scaleX: [1.2, 0.92, 1.05, 0.98, 1], opacity: 1 }
+              : { x: "-50%", y: -400, scaleY: 0.6, scaleX: 1.2, opacity: 0 }
+          }
+          transition={
+            hovered
+              ? { y: { type: "spring", stiffness: 260, damping: 14, mass: 0.9 }, scaleY: { duration: 0.9, times: [0, 0.35, 0.6, 0.8, 1] }, scaleX: { duration: 0.9, times: [0, 0.35, 0.6, 0.8, 1] }, opacity: { duration: 0.15 } }
+              : { duration: 0.4, ease: [0.77, 0, 0.175, 1] }
+          }
           draggable={false}
         />
 
@@ -99,7 +104,7 @@ export function Hero() {
           animate={{ opacity: hovered ? 0 : 1 }}
           className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-full bg-carbon/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-background backdrop-blur"
         >
-          Hover · Suit Up
+          Hover · Helmet On
         </motion.div>
       </div>
 

@@ -1,93 +1,138 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import heroImg from "@/assets/hero-ferrari.jpg";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { ShoppingBag, Minus } from "lucide-react";
+import driverCasual from "@/assets/driver-casual.png";
+import driverSuit from "@/assets/driver-suit.png";
 
 export function Hero() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <section ref={ref} className="relative h-screen w-full overflow-hidden bg-carbon">
-      {/* Top nav */}
-      <header className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-6 md:px-12 py-6">
-        <div className="flex items-center gap-2">
-          <span className="text-giallo text-2xl">★</span>
-          <span className="font-black tracking-widest text-sm">SCUDERIA</span>
-        </div>
-        <nav className="hidden md:flex gap-8 text-xs font-bold tracking-widest uppercase">
-          <a href="#gallery" className="hover:text-rosso ease-premium transition-colors">Gallery</a>
-          <a href="#stats" className="hover:text-rosso ease-premium transition-colors">Stats</a>
-          <a href="#about" className="hover:text-rosso ease-premium transition-colors">About</a>
-        </nav>
-        <div className="text-xs font-bold tracking-widest text-rosso">FORZA · 2026</div>
-      </header>
+    <section className="relative min-h-screen w-full overflow-hidden bg-[#f4f2ed] text-carbon">
+      {/* Topographic pattern bg */}
+      <svg
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden
+      >
+        <defs>
+          <pattern id="topo" x="0" y="0" width="600" height="600" patternUnits="userSpaceOnUse">
+            <path
+              d="M-50 300 Q 150 120 350 280 T 750 260 M -50 420 Q 180 260 380 400 T 760 380 M -50 180 Q 200 40 400 160 T 780 160"
+              fill="none"
+              stroke="#0b0b0b"
+              strokeWidth="1"
+            />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#topo)" />
+      </svg>
 
-      {/* Background image */}
-      <motion.div style={{ y, scale }} className="absolute inset-0">
-        <img
-          src={heroImg}
-          alt="Ferrari Formula 1 SF-24 race car on track"
-          className="h-full w-full object-cover"
-          width={1920}
-          height={1080}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-carbon via-transparent to-carbon/40" />
-        <div className="absolute inset-0 bg-gradient-to-r from-carbon/80 via-transparent to-transparent" />
-      </motion.div>
-
-      {/* Massive impact text */}
-      <motion.div style={{ opacity }} className="relative z-10 flex h-full flex-col justify-end pb-24 md:pb-32 px-6 md:px-12">
+      {/* Top bar */}
+      <header className="relative z-30 flex items-start justify-between px-6 md:px-10 pt-6 md:pt-8">
         <motion.div
-          initial={{ y: 80, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1] }}
-          className="flex items-end gap-4 mb-2"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1] }}
+          className="font-black uppercase leading-[0.85] text-[42px] md:text-[64px] tracking-tight"
         >
-          <span className="text-rosso text-xs font-bold tracking-[0.3em]">N°16 · MONACO</span>
+          <div>Charles</div>
+          <div>Leclerc</div>
         </motion.div>
 
-        <motion.h1
-          initial={{ y: 120, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.4, delay: 0.1, ease: [0.77, 0, 0.175, 1] }}
-          className="text-[18vw] md:text-[14vw] leading-[0.85] font-black uppercase mix-blend-difference"
-        >
-          Forza
-        </motion.h1>
-        <motion.h1
-          initial={{ y: 120, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.4, delay: 0.25, ease: [0.77, 0, 0.175, 1] }}
-          className="text-[18vw] md:text-[14vw] leading-[0.85] font-black uppercase text-rosso -mt-2 md:-mt-4"
-        >
-          Ferrari
-        </motion.h1>
+        <div className="hidden md:flex flex-col items-center gap-1 pt-3">
+          <div className="text-rosso text-3xl leading-none">▲</div>
+          <div className="text-[10px] font-black tracking-[0.3em]">SF · 2026</div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="mt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-6"
-        >
-          <p className="max-w-md text-sm md:text-base text-muted-foreground leading-relaxed">
-            A tribute to Maranello — the speed, the soul, the Cavallino Rampante. Where engineering becomes art and every lap is a love letter to red.
-          </p>
+        <div className="flex items-center gap-2">
           <a
             href="#gallery"
-            className="group inline-flex items-center gap-3 self-start border border-foreground/30 px-6 py-4 text-xs font-bold uppercase tracking-[0.25em] hover:bg-rosso hover:border-rosso ease-premium transition-all duration-500"
+            className="inline-flex items-center gap-2 rounded-md bg-giallo px-4 py-3 text-xs font-black uppercase tracking-widest text-carbon hover:scale-[1.03] ease-premium transition-transform"
           >
-            Scroll to unlock
-            <span className="inline-block h-px w-8 bg-foreground group-hover:w-16 ease-premium transition-all duration-500" />
+            <ShoppingBag className="h-4 w-4" />
+            Store
           </a>
+          <button
+            aria-label="Menu"
+            className="rounded-md border border-carbon/30 p-3 hover:bg-carbon hover:text-background ease-premium transition-colors"
+          >
+            <Minus className="h-4 w-4" />
+          </button>
+        </div>
+      </header>
+
+      {/* Center driver — hover swap */}
+      <div
+        className="relative z-10 mx-auto mt-2 md:mt-0 flex h-[78vh] w-full max-w-[820px] items-end justify-center"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onTouchStart={() => setHovered((h) => !h)}
+      >
+        <motion.img
+          src={driverCasual}
+          alt="Charles Leclerc casual portrait"
+          width={1024}
+          height={1024}
+          className="absolute bottom-0 h-full w-auto select-none object-contain"
+          animate={{ opacity: hovered ? 0 : 1, scale: hovered ? 1.02 : 1 }}
+          transition={{ duration: 0.7, ease: [0.77, 0, 0.175, 1] }}
+          draggable={false}
+        />
+        <motion.img
+          src={driverSuit}
+          alt="Charles Leclerc in Ferrari race suit"
+          width={1024}
+          height={1024}
+          className="absolute bottom-0 h-full w-auto select-none object-contain"
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: hovered ? 1 : 0,
+            clipPath: hovered ? "inset(0% 0 0 0)" : "inset(100% 0 0 0)",
+          }}
+          transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1] }}
+          draggable={false}
+        />
+
+        {/* hover hint */}
+        <motion.div
+          animate={{ opacity: hovered ? 0 : 1 }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-full bg-carbon/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-background backdrop-blur"
+        >
+          Hover · Suit Up
         </motion.div>
+      </div>
+
+      {/* Next race card */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.4 }}
+        className="absolute bottom-6 left-6 md:left-10 z-20 w-[160px] border border-carbon/20 bg-background/40 backdrop-blur-sm"
+      >
+        <div className="border-b border-carbon/20 px-3 py-2 text-[10px] font-black uppercase tracking-widest">
+          Next Race
+        </div>
+        <div className="flex items-center justify-center px-3 py-4">
+          <svg viewBox="0 0 100 40" className="h-10 w-full text-carbon" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M5 25 Q 15 5 35 12 T 70 18 Q 90 22 95 32 L 70 35 Q 50 30 30 33 Z" />
+          </svg>
+        </div>
+        <div className="border-t border-carbon/20 px-3 py-2 text-[11px] font-black uppercase tracking-widest text-center">
+          Monaco GP
+        </div>
+        <div className="flex items-center justify-center gap-1 border-t border-carbon/20 px-3 py-3">
+          <span className="text-rosso text-xl leading-none">🏆</span>
+        </div>
+        <div className="border-t border-carbon/20 px-3 py-2 text-center text-[9px] font-black tracking-widest">
+          SCUDERIA FERRARI<br/>SINCE 1950
+        </div>
       </motion.div>
 
-      {/* Side gauge */}
-      <div className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col items-center gap-3 text-[10px] font-bold tracking-widest text-muted-foreground">
-        <span className="rotate-90 origin-center whitespace-nowrap">SF · 24 / RPM 15.000</span>
+      {/* Bottom-right meta */}
+      <div className="absolute bottom-8 right-6 md:right-10 z-20 text-right text-[10px] font-black uppercase tracking-[0.3em] text-carbon/70">
+        N°16 · Monégasque<br/>
+        <span className="text-rosso">Forza Ferrari</span>
       </div>
     </section>
   );

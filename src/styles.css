@@ -1,6 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Archivo+Black&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -63,25 +64,28 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --background: oklch(0.13 0.005 0);
+  --foreground: oklch(0.98 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --primary: oklch(0.58 0.24 25);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.18 0.01 0);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.2 0.005 0);
+  --muted-foreground: oklch(0.65 0.01 0);
+  --accent: oklch(0.88 0.18 95);
+  --accent-foreground: oklch(0.13 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.25 0.01 0);
+  --input: oklch(0.25 0.01 0);
+  --ring: oklch(0.58 0.24 25);
+  --carbon: oklch(0.1 0.003 0);
+  --giallo: oklch(0.88 0.18 95);
+  --rosso: oklch(0.58 0.24 25);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +144,36 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: "Montserrat", system-ui, sans-serif;
+    overflow-x: hidden;
   }
+
+  h1, h2, h3 {
+    font-family: "Archivo Black", "Montserrat", sans-serif;
+    letter-spacing: -0.03em;
+  }
+}
+
+@layer utilities {
+  .text-rosso { color: var(--rosso); }
+  .bg-rosso { background-color: var(--rosso); }
+  .text-giallo { color: var(--giallo); }
+  .bg-carbon { background-color: var(--carbon); }
+  .bg-carbon-grad {
+    background-image:
+      linear-gradient(135deg, oklch(0.13 0.005 0) 0%, oklch(0.08 0.003 0) 100%),
+      repeating-linear-gradient(45deg, transparent 0 10px, oklch(1 0 0 / 0.02) 10px 11px);
+  }
+  .ease-premium { transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee linear infinite; }
+
+@keyframes reveal-clip {
+  from { clip-path: circle(0% at 50% 50%); }
+  to { clip-path: circle(75% at 50% 50%); }
 }

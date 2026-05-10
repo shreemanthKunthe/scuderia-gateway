@@ -1,26 +1,31 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Hero } from "@/components/Hero";
+import { Marquee } from "@/components/Marquee";
+import { Gallery } from "@/components/Gallery";
+import { Stats } from "@/components/Stats";
+import { Footer } from "@/components/Footer";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "Forza Ferrari — A Tribute to Scuderia Ferrari F1" },
+      { name: "description", content: "An immersive fan tribute to Scuderia Ferrari Formula 1. Carbon, red, and the roar of Maranello." },
+      { property: "og:title", content: "Forza Ferrari — F1 Tribute" },
+      { property: "og:description", content: "Immersive Ferrari F1 fan experience. Carbon, red, the roar of Maranello." },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <main className="bg-carbon text-foreground">
+      <Hero />
+      <Marquee text="SCUDERIA FERRARI · FORZA FERRARI · CAVALLINO RAMPANTE" duration={40} />
+      <Gallery />
+      <Marquee text="MARANELLO · 1929 · ROSSO CORSA · TIFOSI" duration={28} reverse accent />
+      <Stats />
+      <Footer />
+    </main>
+  );
 }

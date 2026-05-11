@@ -61,7 +61,7 @@ export function Hero() {
       </header>
 
       {/* Center driver — fluid hover reveal */}
-      <div className="relative z-10 mx-auto mt-2 md:mt-0 h-[78vh] w-full max-w-[820px]">
+      <div className="relative z-10 mx-auto -mt-10 md:-mt-16 h-[92vh] w-full max-w-[1200px]">
         <FluidReveal
           topSrc={driverCasual}
           bottomSrc={driverSuit}

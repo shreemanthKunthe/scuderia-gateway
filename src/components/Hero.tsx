@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { ShoppingBag, Minus } from "lucide-react";
-import driverCasual from "@/assets/driver-casual.png";
-import driverSuit from "@/assets/driver-suit.png";
+import driverCasual from "@/assets/Base.png";
+import driverSuit from "@/assets/Reveal.png";
 import { FluidReveal } from "@/components/FluidReveal";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#f4f2ed] text-carbon">
+    <section className="relative min-h-screen w-full overflow-hidden bg-[#ffffff] text-carbon">
       {/* Topographic pattern bg */}
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
@@ -25,6 +25,35 @@ export function Hero() {
         </defs>
         <rect width="100%" height="100%" fill="url(#topo)" />
       </svg>
+
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <motion.div
+          animate={{
+            x: [0, 40, -40, 0],
+            y: [0, -40, 40, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          style={{ willChange: "transform" }}
+          className="absolute top-1/4 left-1/4 w-[30rem] h-[30rem] bg-rosso/20 rounded-full blur-[80px] opacity-60"
+        />
+        <motion.div
+          animate={{
+            x: [0, -50, 50, 0],
+            y: [0, 50, -50, 0],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          style={{ willChange: "transform" }}
+          className="absolute bottom-1/4 right-1/4 w-[40rem] h-[40rem] bg-giallo/20 rounded-full blur-[80px] opacity-60"
+        />
+      </div>
 
       {/* Top bar */}
       <header className="relative z-30 flex items-start justify-between px-6 md:px-10 pt-6 md:pt-8">
@@ -61,13 +90,13 @@ export function Hero() {
       </header>
 
       {/* Center driver — fluid hover reveal (centered editorial composition) */}
-      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+      <div className="pointer-events-none absolute inset-0 z-10 flex items-end justify-center">
         <FluidReveal
           topSrc={driverCasual}
           bottomSrc={driverSuit}
           topAlt="Charles Leclerc casual portrait"
           bottomAlt="Charles Leclerc in Ferrari race suit"
-          className="pointer-events-auto h-[100vh] w-full max-w-[1400px]"
+          className="pointer-events-auto h-[100vh] w-full"
         />
         <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-full bg-carbon/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-background backdrop-blur">
           Hover · Suit Up
@@ -96,13 +125,13 @@ export function Hero() {
           <span className="text-rosso text-xl leading-none">🏆</span>
         </div>
         <div className="border-t border-carbon/20 px-3 py-2 text-center text-[9px] font-black tracking-widest">
-          SCUDERIA FERRARI<br/>SINCE 1950
+          SCUDERIA FERRARI<br />SINCE 1950
         </div>
       </motion.div>
 
       {/* Bottom-right meta */}
       <div className="absolute bottom-8 right-6 md:right-10 z-20 text-right text-[10px] font-black uppercase tracking-[0.3em] text-carbon/70">
-        N°16 · Monégasque<br/>
+        N°16 · Monégasque<br />
         <span className="text-rosso">Forza Ferrari</span>
       </div>
     </section>

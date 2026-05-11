@@ -17,6 +17,7 @@ type Props = {
 export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const circleRef = useRef<SVGCircleElement>(null);
+  const circleBottomRef = useRef<SVGCircleElement>(null);
   const turbRef = useRef<SVGFETurbulenceElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
 
@@ -50,9 +51,12 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
         c.setAttribute("cy", String(current.current.y));
         c.setAttribute("r", String(Math.max(0, current.current.r)));
       }
-      seed.current += 0.25;
-      const t = turbRef.current;
-      if (t) t.setAttribute("seed", String(Math.floor(seed.current) % 1000));
+      const cb = circleBottomRef.current;
+      if (cb) {
+        cb.setAttribute("cx", String(current.current.x));
+        cb.setAttribute("cy", String(current.current.y));
+        cb.setAttribute("r", String(Math.max(0, current.current.r)));
+      }
 
       raf = requestAnimationFrame(tick);
     };
@@ -77,6 +81,7 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
   };
 
   const maskId = "fluid-mask";
+  const maskBottomId = "fluid-mask-bottom";
   const filterId = "fluid-distort";
 
   return (
@@ -121,6 +126,12 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
                 <circle ref={circleRef} cx={-9999} cy={-9999} r={0} fill="black" />
               </g>
             </mask>
+            <mask id={maskBottomId} maskUnits="userSpaceOnUse" x="0" y="0" width={size.w} height={size.h}>
+              <rect x="0" y="0" width={size.w} height={size.h} fill="black" />
+              <g filter={`url(#${filterId})`}>
+                <circle ref={circleBottomRef} cx={-9999} cy={-9999} r={0} fill="white" />
+              </g>
+            </mask>
           </defs>
 
           {/* bottom (revealed beneath) */}
@@ -130,7 +141,8 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
             y="0"
             width={size.w}
             height={size.h}
-            preserveAspectRatio="xMidYMid meet"
+            preserveAspectRatio="xMidYMax slice"
+            mask={`url(#${maskBottomId})`}
           >
             {bottomAlt && <title>{bottomAlt}</title>}
           </image>
@@ -141,7 +153,7 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
             y="0"
             width={size.w}
             height={size.h}
-            preserveAspectRatio="xMidYMid meet"
+            preserveAspectRatio="xMidYMax slice"
             mask={`url(#${maskId})`}
           >
             {topAlt && <title>{topAlt}</title>}

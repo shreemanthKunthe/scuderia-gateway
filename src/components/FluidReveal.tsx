@@ -130,7 +130,7 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
             y="0"
             width={size.w}
             height={size.h}
-            preserveAspectRatio="xMidYMid slice"
+            preserveAspectRatio="xMidYMid meet"
           >
             {bottomAlt && <title>{bottomAlt}</title>}
           </image>
@@ -141,7 +141,7 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
             y="0"
             width={size.w}
             height={size.h}
-            preserveAspectRatio="xMidYMid slice"
+            preserveAspectRatio="xMidYMid meet"
             mask={`url(#${maskId})`}
           >
             {topAlt && <title>{topAlt}</title>}

@@ -60,14 +60,14 @@ export function Hero() {
         </div>
       </header>
 
-      {/* Center driver — fluid hover reveal (fullscreen) */}
-      <div className="absolute inset-0 z-10">
+      {/* Center driver — fluid hover reveal (centered editorial composition) */}
+      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
         <FluidReveal
           topSrc={driverCasual}
           bottomSrc={driverSuit}
           topAlt="Charles Leclerc casual portrait"
           bottomAlt="Charles Leclerc in Ferrari race suit"
-          className="absolute inset-0"
+          className="pointer-events-auto h-[100vh] w-full max-w-[1400px]"
         />
         <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-full bg-carbon/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-background backdrop-blur">
           Hover · Suit Up

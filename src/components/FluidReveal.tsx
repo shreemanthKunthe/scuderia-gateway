@@ -93,7 +93,7 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
           width="100%"
           height="100%"
           viewBox={`0 0 ${size.w} ${size.h}`}
-          preserveAspectRatio="xMidYMid meet"
+          preserveAspectRatio="xMidYMid slice"
           style={{ display: "block" }}
         >
           <defs>
@@ -130,7 +130,7 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
             y="0"
             width={size.w}
             height={size.h}
-            preserveAspectRatio="xMidYMax meet"
+            preserveAspectRatio="xMidYMid slice"
           >
             {bottomAlt && <title>{bottomAlt}</title>}
           </image>
@@ -141,7 +141,7 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
             y="0"
             width={size.w}
             height={size.h}
-            preserveAspectRatio="xMidYMax meet"
+            preserveAspectRatio="xMidYMid slice"
             mask={`url(#${maskId})`}
           >
             {topAlt && <title>{topAlt}</title>}

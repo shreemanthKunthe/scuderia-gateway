@@ -40,9 +40,9 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
   useEffect(() => {
     let raf = 0;
     const tick = () => {
-      current.current.x += (target.current.x - current.current.x) * 0.12;
-      current.current.y += (target.current.y - current.current.y) * 0.12;
-      current.current.r += (target.current.r - current.current.r) * 0.09;
+      current.current.x += (target.current.x - current.current.x) * 0.045;
+      current.current.y += (target.current.y - current.current.y) * 0.045;
+      current.current.r += (target.current.r - current.current.r) * 0.035;
 
       const c = circleRef.current;
       if (c) {
@@ -50,7 +50,7 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
         c.setAttribute("cy", String(current.current.y));
         c.setAttribute("r", String(Math.max(0, current.current.r)));
       }
-      seed.current += 0.5;
+      seed.current += 0.25;
       const t = turbRef.current;
       if (t) t.setAttribute("seed", String(Math.floor(seed.current) % 1000));
 
@@ -64,7 +64,7 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
     const r = wrapRef.current!.getBoundingClientRect();
     target.current.x = e.clientX - r.left;
     target.current.y = e.clientY - r.top;
-    target.current.r = Math.max(r.width, r.height) * 0.3;
+    target.current.r = Math.max(r.width, r.height) * 0.38;
   };
   const handleEnter = (e: React.MouseEvent) => {
     const r = wrapRef.current!.getBoundingClientRect();

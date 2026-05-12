@@ -1,12 +1,108 @@
-import { motion } from "framer-motion";
-import { ShoppingBag, Minus } from "lucide-react";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 import driverCasual from "@/assets/Base.png";
 import driverSuit from "@/assets/Reveal.png";
 import { FluidReveal } from "@/components/FluidReveal";
 
 export function Hero() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX - window.innerWidth / 2);
+      mouseY.set(e.clientY - window.innerHeight / 2);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  const smoothX = useSpring(mouseX, { damping: 50, stiffness: 400 });
+  const smoothY = useSpring(mouseY, { damping: 50, stiffness: 400 });
+
+  const parallaxX = useTransform(smoothX, [-1000, 1000], [-80, 80]);
+  const parallaxY = useTransform(smoothY, [-1000, 1000], [-80, 80]);
+
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-[#ffffff] text-carbon">
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
+            animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
+            exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
+            transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1] }}
+            className="fixed inset-0 z-50 flex bg-carbon text-white overflow-hidden"
+          >
+             <svg
+              className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.05]"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden
+            >
+              <rect width="100%" height="100%" fill="url(#topo)" />
+            </svg>
+
+             <div className="absolute top-0 left-0 right-0 flex items-start justify-between px-6 md:px-10 pt-6 md:pt-8 z-50">
+                <div className="flex flex-col uppercase text-white">
+                  <div className="font-serif text-[28px] md:text-[38px] leading-[0.8] tracking-widest">Asma</div>
+                  <div className="font-black text-[34px] md:text-[46px] leading-[0.8] tracking-tighter">Salar</div>
+                </div>
+                <div className="flex items-center gap-6">
+                  <button
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-label="Close Menu"
+                    className="flex h-[42px] w-[48px] flex-col items-center justify-center rounded-xl border-2 border-white/20 bg-transparent hover:bg-white/10 transition-colors text-white"
+                  >
+                    <X className="h-6 w-6 stroke-[2]" />
+                  </button>
+                </div>
+             </div>
+
+             <div className="relative z-10 flex w-full h-full pt-[120px] px-6 md:px-10 pb-10">
+               <div className="hidden md:flex w-1/2 flex-wrap gap-6 items-center justify-center overflow-hidden pr-10">
+                 <img src={driverCasual} className="w-[45%] h-auto max-h-[50%] object-cover rounded-xl grayscale opacity-60" />
+                 <img src={driverSuit} className="w-[45%] h-auto max-h-[50%] object-cover rounded-xl grayscale opacity-60 translate-y-16" />
+               </div>
+               
+               <div className="flex w-full md:w-1/2 flex-col justify-center items-end text-right pr-4 md:pr-10">
+                  <nav className="flex flex-col gap-1 uppercase font-black text-[50px] md:text-[80px] lg:text-[100px] leading-[0.85] tracking-tighter">
+                    <a href="#" className="hover:text-rosso transition-colors relative group">
+                      <span className="relative z-10">Home</span>
+                      <motion.svg className="absolute top-[40%] -left-[10%] w-[120%] h-[30px] -translate-y-1/2 opacity-0 group-hover:opacity-100 z-0 text-rosso pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 20" fill="none" stroke="currentColor" strokeWidth="3">
+                        <path d="M0,10 Q25,25 50,10 T100,10" />
+                      </motion.svg>
+                    </a>
+                    <a href="#" className="hover:text-rosso transition-colors">On Track</a>
+                    <a href="#" className="hover:text-rosso transition-colors">Off Track</a>
+                    <a href="#" className="hover:text-rosso transition-colors">Calendar</a>
+                  </nav>
+
+                  <div className="mt-auto flex flex-col items-end gap-6 text-[11px] font-black uppercase tracking-widest text-white/50">
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-rosso/80 text-2xl leading-none">🏆</span>
+                    </div>
+                    <div className="text-right">
+                      SCUDERIA FERRARI<br />SINCE 1950
+                    </div>
+                    
+                    <div className="mt-4 flex flex-col items-end gap-3 border-t border-white/20 pt-6">
+                      <div className="text-white hover:text-rosso transition-colors cursor-pointer">BUSINESS ENQUIRIES</div>
+                      <div className="flex gap-4 mt-1">
+                        <a href="#" className="hover:text-white transition-colors">TIKTOK</a>
+                        <a href="#" className="hover:text-white transition-colors">INSTAGRAM</a>
+                        <a href="#" className="hover:text-white transition-colors">YOUTUBE</a>
+                        <a href="#" className="hover:text-white transition-colors">TWITCH</a>
+                      </div>
+                    </div>
+                  </div>
+               </div>
+             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Topographic pattern bg */}
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
@@ -26,7 +122,10 @@ export function Hero() {
         <rect width="100%" height="100%" fill="url(#topo)" />
       </svg>
 
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      <motion.div
+        className="absolute inset-0 overflow-hidden pointer-events-none z-0"
+        style={{ x: parallaxX, y: parallaxY }}
+      >
         <motion.div
           animate={{
             x: [0, 40, -40, 0],
@@ -53,7 +152,7 @@ export function Hero() {
           style={{ willChange: "transform" }}
           className="absolute bottom-1/4 right-1/4 w-[40rem] h-[40rem] bg-giallo/20 rounded-full blur-[80px] opacity-60"
         />
-      </div>
+      </motion.div>
 
       {/* Top bar */}
       <header className="relative z-30 flex items-start justify-between px-6 md:px-10 pt-6 md:pt-8">
@@ -61,30 +160,28 @@ export function Hero() {
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1] }}
-          className="font-black uppercase leading-[0.85] text-[42px] md:text-[64px] tracking-tight"
+          className="flex flex-col uppercase text-black"
         >
-          <div>Charles</div>
-          <div>Leclerc</div>
+          <div className="font-serif text-[28px] md:text-[38px] leading-[0.8] tracking-widest">Asma</div>
+          <div className="font-black text-[34px] md:text-[46px] leading-[0.8] tracking-tighter">Salar</div>
         </motion.div>
 
-        <div className="hidden md:flex flex-col items-center gap-1 pt-3">
-          <div className="text-rosso text-3xl leading-none">▲</div>
-          <div className="text-[10px] font-black tracking-[0.3em]">SF · 2026</div>
-        </div>
 
-        <div className="flex items-center gap-2">
+
+        <div className="flex items-center gap-6">
           <a
-            href="#gallery"
-            className="inline-flex items-center gap-2 rounded-md bg-giallo px-4 py-3 text-xs font-black uppercase tracking-widest text-carbon hover:scale-[1.03] ease-premium transition-transform"
+            href="#about-me"
+            className="text-sm font-black uppercase tracking-widest text-black hover:opacity-60 transition-opacity"
           >
-            <ShoppingBag className="h-4 w-4" />
-            Store
+            ABOUT ME
           </a>
           <button
+            onClick={() => setIsMenuOpen(true)}
             aria-label="Menu"
-            className="rounded-md border border-carbon/30 p-3 hover:bg-carbon hover:text-background ease-premium transition-colors"
+            className="flex h-[42px] w-[48px] flex-col items-center justify-center gap-[5px] rounded-xl border-2 border-carbon bg-transparent hover:bg-gray-50 transition-colors"
           >
-            <Minus className="h-4 w-4" />
+            <div className="h-[2px] w-[14px] bg-carbon self-start ml-2.5" />
+            <div className="h-[2px] w-6 bg-carbon" />
           </button>
         </div>
       </header>
@@ -96,7 +193,7 @@ export function Hero() {
           bottomSrc={driverSuit}
           topAlt="Charles Leclerc casual portrait"
           bottomAlt="Charles Leclerc in Ferrari race suit"
-          className="pointer-events-auto h-[100vh] w-full"
+          className="pointer-events-auto h-[85vh] w-[85vw] max-w-[900px]"
         />
         <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-full bg-carbon/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-background backdrop-blur">
           Hover · Suit Up

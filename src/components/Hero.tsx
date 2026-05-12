@@ -3,9 +3,13 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import driverCasual from "@/assets/Base.png";
 import driverSuit from "@/assets/Reveal.png";
+import img1 from "@/assets/1.jpeg";
+import img2 from "@/assets/2.jpeg";
+import img3 from "@/assets/3.jpeg";
 import { FluidReveal } from "@/components/FluidReveal";
 
 export function Hero() {
+  const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -19,6 +23,13 @@ export function Hero() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const smoothX = useSpring(mouseX, { damping: 50, stiffness: 400 });
   const smoothY = useSpring(mouseY, { damping: 50, stiffness: 400 });
 
@@ -27,6 +38,62 @@ export function Hero() {
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-[#ffffff] text-carbon">
+      {/* Loading Screen */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            key="loader"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-carbon"
+          >
+            <div className="relative flex flex-col items-center uppercase text-center">
+              {/* Dim background text */}
+              <div className="text-white/20">
+                <div className="font-serif text-[18vw] md:text-[10vw] leading-[0.8] tracking-widest">Asma</div>
+                <div className="font-black text-[20vw] md:text-[12vw] leading-[0.8] tracking-tighter">Salar</div>
+              </div>
+              
+              {/* Bright text wiping over it */}
+              <motion.div
+                initial={{ clipPath: "inset(0 100% 0 0)" }}
+                animate={{ clipPath: "inset(0 0% 0 0)" }}
+                transition={{ duration: 2.8, ease: "easeInOut", delay: 0.2 }}
+                className="absolute inset-0 text-white"
+              >
+                <div className="font-serif text-[18vw] md:text-[10vw] leading-[0.8] tracking-widest">Asma</div>
+                <div className="font-black text-[20vw] md:text-[12vw] leading-[0.8] tracking-tighter">Salar</div>
+              </motion.div>
+            </div>
+            
+            {/* UI Accents */}
+            <div className="absolute top-10 left-10 text-[10px] font-black uppercase tracking-widest text-white/50 hidden md:block">
+              [ FILE_06 ]
+            </div>
+            <div className="absolute top-10 right-10 text-[10px] font-black uppercase tracking-widest text-white/50 hidden md:block">
+              DVS0204-2X25
+            </div>
+            
+            <div className="absolute left-10 top-1/2 -translate-y-1/2 text-white/50 text-xs hidden md:block">+</div>
+            <div className="absolute right-10 top-1/2 -translate-y-1/2 text-white/50 text-xs hidden md:block">+</div>
+            
+            <div className="absolute bottom-10 left-6 md:left-10 text-[10px] font-black uppercase tracking-widest text-white/50">
+              Please wait...
+            </div>
+            
+            <div className="absolute bottom-10 right-6 md:right-10 flex items-center justify-start w-[80px] md:w-[100px] h-[8px] border border-white/20 p-[1px]">
+               <motion.div
+                 initial={{ width: "0%" }}
+                 animate={{ width: "100%" }}
+                 transition={{ duration: 2.8, ease: "easeInOut", delay: 0.2 }}
+                 className="h-full bg-white"
+               />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -61,9 +128,14 @@ export function Hero() {
             </div>
 
             <div className="relative z-10 flex w-full h-full pt-[120px] px-6 md:px-10 pb-10">
-              <div className="hidden md:flex w-1/2 flex-wrap gap-6 items-center justify-center overflow-hidden pr-10">
-                <img src={driverCasual} className="w-[45%] h-auto max-h-[50%] object-cover rounded-xl grayscale opacity-60" />
-                <img src={driverSuit} className="w-[45%] h-auto max-h-[50%] object-cover rounded-xl grayscale opacity-60 translate-y-16" />
+              <div className="hidden md:flex w-1/2 gap-4 items-center justify-center overflow-hidden pr-10">
+                <div className="flex flex-col gap-4 w-[45%] mt-12">
+                  <img src={img1} className="w-full h-auto object-cover rounded-xl grayscale opacity-60" alt="Menu 1" />
+                  <img src={img3} className="w-full h-auto object-cover rounded-xl grayscale opacity-60" alt="Menu 3" />
+                </div>
+                <div className="flex flex-col gap-4 w-[45%] -mt-12">
+                  <img src={img2} className="w-full h-auto object-cover rounded-xl grayscale opacity-60" alt="Menu 2" />
+                </div>
               </div>
 
               <div className="flex w-full md:w-1/2 flex-col justify-center items-end text-right pr-4 md:pr-10">
@@ -84,7 +156,7 @@ export function Hero() {
                     <span className="text-rosso/80 text-2xl leading-none">🏆</span>
                   </div>
                   <div className="text-right">
-                    SCUDERIA FERRARI<br />SINCE 2022
+                    SCUDERIA FERRARI<br />SINCE 2023
                   </div>
 
                   <div className="mt-4 flex flex-col items-end gap-3 border-t border-white/20 pt-6">
@@ -102,9 +174,18 @@ export function Hero() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Topographic pattern bg */}
-      <svg
+      <motion.div
+        initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+        animate={{ 
+          opacity: isLoading ? 0 : 1, 
+          y: isLoading ? 50 : 0,
+          filter: isLoading ? "blur(10px)" : "blur(0px)"
+        }}
+        transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1], delay: 0.1 }}
+        className="relative h-full w-full min-h-screen"
+      >
+        {/* Topographic pattern bg */}
+        <svg
         className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden
@@ -233,6 +314,7 @@ export function Hero() {
         N°16 · Monégasque<br />
         <span className="text-rosso">Forza Ferrari</span>
       </div>
+      </motion.div>
     </section>
   );
 }

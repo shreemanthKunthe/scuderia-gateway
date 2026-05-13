@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Hero } from "@/components/Hero";
 import { Marquee } from "@/components/Marquee";
 import { Gallery } from "@/components/Gallery";
-import { Stats } from "@/components/Stats";
+import { PhotoShowcase } from "@/components/PhotoShowcase";
+import { TrackSection } from "@/components/TrackSection";
 import { Footer } from "@/components/Footer";
 
 export const Route = createFileRoute("/")({
@@ -23,8 +24,9 @@ function Index() {
       <Hero />
       <Marquee text="SCUDERIA FERRARI · FORZA FERRARI · ASMA SALAR" duration={40} />
       <Gallery />
+      <PhotoShowcase />
       <Marquee text="MARANELLO · 1929 · ROSSO CORSA · TIFOSI" duration={28} reverse accent />
-      <Stats />
+      <TrackSection />
       <Footer />
     </main>
   );

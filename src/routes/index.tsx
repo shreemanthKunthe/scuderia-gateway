@@ -10,7 +10,7 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Forza Ferrari — A Tribute to Scuderia Ferrari F1" },
+      { title: "Ashu-F1" },
       { name: "description", content: "An immersive fan tribute to Scuderia Ferrari Formula 1. Carbon, red, and the roar of Maranello." },
       { property: "og:title", content: "Forza Ferrari — F1 Tribute" },
       { property: "og:description", content: "Immersive Ferrari F1 fan experience. Carbon, red, the roar of Maranello." },
@@ -25,7 +25,7 @@ function Index() {
       <Marquee text="SCUDERIA FERRARI · FORZA FERRARI · ASMA SALAR" duration={40} />
       <Gallery />
       <PhotoShowcase />
-      <Marquee text="MARANELLO · 1929 · ROSSO CORSA · TIFOSI" duration={28} reverse accent />
+      <Marquee text="CHARLES LECLERC · LEWIS HAMILTON · ASMA SALAR" duration={28} reverse accent />
       <TrackSection />
       <Footer />
     </main>

@@ -8,6 +8,21 @@ import img2 from "@/assets/2.jpeg";
 import img3 from "@/assets/3.jpeg";
 import { FluidReveal } from "@/components/FluidReveal";
 
+const particles = Array.from({ length: 50 }).map((_, i) => {
+  const isRed = Math.random() > 0.6;
+  const isYellow = Math.random() > 0.85;
+  return {
+    id: i,
+    size: Math.random() * 3 + 1.5,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 20 + 15,
+    delay: -Math.random() * 20,
+    color: isYellow ? "bg-giallo/50" : isRed ? "bg-rosso/40" : "bg-carbon/20",
+    xOffset: (Math.random() - 0.5) * 30,
+  };
+});
+
 export function Hero() {
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,6 +45,17 @@ export function Hero() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (isLoading) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isLoading]);
+
   const smoothX = useSpring(mouseX, { damping: 50, stiffness: 400 });
   const smoothY = useSpring(mouseY, { damping: 50, stiffness: 400 });
 
@@ -37,7 +63,7 @@ export function Hero() {
   const parallaxY = useTransform(smoothY, [-1000, 1000], [-80, 80]);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#ffffff] text-carbon">
+    <section className="sticky top-0 z-0 min-h-screen w-full overflow-hidden bg-[#ffffff] text-carbon">
       {/* Loading Screen */}
       <AnimatePresence>
         {isLoading && (
@@ -185,28 +211,56 @@ export function Hero() {
         className="relative h-full w-full min-h-screen"
       >
         {/* Topographic pattern bg */}
-        <svg
-        className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden
-      >
-        <defs>
-          <pattern id="topo" x="0" y="0" width="600" height="600" patternUnits="userSpaceOnUse">
-            <path
-              d="M-50 300 Q 150 120 350 280 T 750 260 M -50 420 Q 180 260 380 400 T 760 380 M -50 180 Q 200 40 400 160 T 780 160"
-              fill="none"
-              stroke="#0b0b0b"
-              strokeWidth="1"
-            />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#topo)" />
-      </svg>
+        <motion.div 
+          className="pointer-events-none absolute inset-0 z-0 opacity-[0.25]"
+          animate={{ x: [0, -600], y: [0, -600] }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          style={{ width: "calc(100% + 600px)", height: "calc(100% + 600px)" }}
+        >
+          <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+            <defs>
+              <pattern id="topo" x="0" y="0" width="600" height="600" patternUnits="userSpaceOnUse">
+                <path
+                  d="M-50 300 Q 150 120 350 280 T 750 260 M -50 420 Q 180 260 380 400 T 760 380 M -50 180 Q 200 40 400 160 T 780 160"
+                  fill="none"
+                  stroke="#0b0b0b"
+                  strokeWidth="1.5"
+                />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#topo)" />
+          </svg>
+        </motion.div>
 
       <motion.div
         className="absolute inset-0 overflow-hidden pointer-events-none z-0"
         style={{ x: parallaxX, y: parallaxY }}
       >
+        {/* Particles */}
+        {particles.map((p) => (
+          <motion.div
+            key={p.id}
+            className={`absolute rounded-full ${p.color}`}
+            style={{
+              width: p.size,
+              height: p.size,
+              left: `${p.x}%`,
+              top: `${p.y}%`,
+            }}
+            animate={{
+              y: ["10vh", "-100vh"],
+              x: ["0vw", `${p.xOffset}vw`],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: p.duration,
+              repeat: Infinity,
+              ease: "linear",
+              delay: p.delay,
+            }}
+          />
+        ))}
+
         <motion.div
           animate={{
             x: [0, 100, -100, 0],
@@ -276,7 +330,7 @@ export function Hero() {
           bottomSrc={driverSuit}
           topAlt="Charles Leclerc casual portrait"
           bottomAlt="Charles Leclerc in Ferrari race suit"
-          className="pointer-events-auto h-full w-full md:h-[85vh] md:w-[85vw] max-w-[900px]"
+          className="pointer-events-auto h-[85vh] w-full md:w-[85vw] max-w-[900px]"
         />
         <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-full bg-carbon/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-background backdrop-blur">
           Hover · Suit Up

@@ -8,7 +8,7 @@ interface MarqueeProps {
 export function Marquee({ text, duration = 30, reverse, accent }: MarqueeProps) {
   const items = Array.from({ length: 8 }, (_, i) => i);
   return (
-    <div className={`overflow-hidden border-y border-border py-6 ${accent ? "bg-rosso" : "bg-carbon"}`}>
+    <div className={`relative z-10 overflow-hidden border-y border-border py-6 ${accent ? "bg-rosso" : "bg-carbon"}`}>
       <div
         className="flex whitespace-nowrap animate-marquee"
         style={{

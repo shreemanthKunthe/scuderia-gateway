@@ -110,15 +110,22 @@ export function FluidReveal({ topSrc, bottomSrc, topAlt, bottomAlt, className }:
                 numOctaves="2"
                 seed="1"
                 result="noise"
-              />
+              >
+                <animate
+                  attributeName="baseFrequency"
+                  values="0.013;0.016;0.013"
+                  dur="4s"
+                  repeatCount="indefinite"
+                />
+              </feTurbulence>
               <feDisplacementMap
                 in="SourceGraphic"
                 in2="noise"
-                scale="80"
+                scale="70"
                 xChannelSelector="R"
                 yChannelSelector="G"
               />
-              <feGaussianBlur stdDeviation="2" />
+              <feGaussianBlur stdDeviation="2.5" />
             </filter>
             <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width={size.w} height={size.h}>
               <rect x="0" y="0" width={size.w} height={size.h} fill="white" />

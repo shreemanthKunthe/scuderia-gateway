@@ -21,7 +21,7 @@ function Index() {
   return (
     <main className="bg-carbon text-foreground">
       <Hero />
-      <Marquee text="SCUDERIA FERRARI · FORZA FERRARI · CAVALLINO RAMPANTE" duration={40} />
+      <Marquee text="SCUDERIA FERRARI · FORZA FERRARI · ASMA SALAR" duration={40} />
       <Gallery />
       <Marquee text="MARANELLO · 1929 · ROSSO CORSA · TIFOSI" duration={28} reverse accent />
       <Stats />
